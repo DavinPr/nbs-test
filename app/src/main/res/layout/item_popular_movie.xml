@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/grey_800">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/popular_movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="4dp"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/popular_movie_rating"
+        style="@style/TextBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/background_tag"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/popular_movie_poster"
+        app:layout_constraintStart_toStartOf="@id/popular_movie_poster"
+        tools:text="8/10"
+        app:drawableStartCompat="@drawable/ic_outline_star" />
+
+    <TextView
+        android:id="@+id/popular_movie_title"
+        style="@style/TextPopularMovieTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popular_movie_poster"
+        tools:text="Avanger : End Game" />
+
+    <TextView
+        android:id="@+id/popular_movie_overview"
+        style="@style/TextSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/popular_movie_title"
+        app:layout_constraintTop_toBottomOf="@+id/popular_movie_title"
+        tools:text="RIP Tony Stark" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

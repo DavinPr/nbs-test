@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_800"
+    tools:context=".ui.detail.DetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/detail_poster"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:foreground="@drawable/foreground_detail_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/detail_title"
+            style="@style/TextDetailMovieTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            tools:text="Guardian of the Galaxy Vol. 3" />
+
+        <TextView
+            android:id="@+id/detail_runtime"
+            style="@style/TextSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_title"
+            tools:text="2h 30m" />
+
+        <TextView
+            android:id="@+id/detail_genres"
+            style="@style/TextSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="@+id/detail_title"
+            app:layout_constraintStart_toStartOf="@+id/detail_runtime"
+            app:layout_constraintTop_toBottomOf="@+id/detail_runtime"
+            tools:text="Adventure, Action, Comedy" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/detail_btn_trailer"
+            style="@style/filledButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/yellow_600"
+            android:text="@string/watch_trailer"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextSearchResult"
+            android:textColor="@color/black"
+            app:cornerRadius="6dp"
+            app:layout_constraintEnd_toStartOf="@id/detail_btn_favorite"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/detail_genres"
+            app:layout_constraintTop_toBottomOf="@+id/detail_genres" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/detail_btn_favorite"
+            style="@style/outlineButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextSearchResult"
+            app:cornerRadius="6dp"
+            app:icon="@drawable/ic_outline_favorite"
+            app:iconTint="@color/yellow_600"
+            app:layout_constraintEnd_toEndOf="@+id/detail_title"
+            app:layout_constraintStart_toEndOf="@+id/detail_btn_trailer"
+            app:layout_constraintTop_toTopOf="@+id/detail_btn_trailer"
+            tools:text="Add to Favorite" />
+
+        <TextView
+            android:id="@+id/detail_overview"
+            style="@style/TextSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_btn_favorite"
+            app:layout_constraintStart_toStartOf="@+id/detail_btn_trailer"
+            app:layout_constraintTop_toBottomOf="@+id/detail_btn_trailer"
+            tools:text="Adventure, Action, Comedy" />
+
+        <TextView
+            android:id="@+id/detail_cast_category"
+            style="@style/TextCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cast"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_overview"
+            app:layout_constraintStart_toStartOf="@+id/detail_overview"
+            app:layout_constraintTop_toBottomOf="@+id/detail_overview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detail_rv_cast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/detail_cast_category"
+            tools:listitem="@layout/item_detail_cast" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="200dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

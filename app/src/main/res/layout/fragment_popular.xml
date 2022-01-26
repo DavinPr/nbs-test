@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:background="@color/grey_800"
+    tools:context=".ui.popular.PopularFragment">
+
+    <com.adityadavin.nbsmoviedb.utils.CustomSearchView
+        android:id="@+id/popular_search_movie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_900"
+        />
+
+    <TextView
+        android:id="@+id/popular_search_message"
+        style="@style/TextSearchResult"
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Showing Result of 'Maze Runner'"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popular_rv_movie"
+        tools:listitem="@layout/item_popular_movie"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
