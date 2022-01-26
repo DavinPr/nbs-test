@@ -1,20 +1,25 @@
 package com.adityadavin.nbsmoviedb.core.data
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.adityadavin.nbsmoviedb.core.data.source.local.LocalDataSource
 import com.adityadavin.nbsmoviedb.core.data.source.remote.RemoteDataSource
 import com.adityadavin.nbsmoviedb.core.data.source.remote.network.ApiResponse
 import com.adityadavin.nbsmoviedb.core.data.source.remote.response.MovieResultResponse
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
+import com.adityadavin.nbsmoviedb.core.domain.model.FavoriteMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.Movie
 import com.adityadavin.nbsmoviedb.core.domain.repository.IMovieRepository
 import com.adityadavin.nbsmoviedb.core.utils.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.SingleSubject
 
 class MovieRepository(
     private val localDataSource: LocalDataSource,
@@ -189,5 +194,47 @@ class MovieRepository(
             .subscribe { result.onNext(it) }
         mCompositeDisposable.add(disposable)
         return result.toFlowable(BackpressureStrategy.BUFFER)
+    }
+
+    override fun getMovieFavorite(): Flowable<Resource<List<FavoriteMovie>>> {
+        val result = PublishSubject.create<Resource<List<FavoriteMovie>>>()
+        val mCompositeDisposable = CompositeDisposable()
+        result.onNext(Resource.Loading(null))
+        val response = localDataSource.getMoviesFavorite()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .doOnComplete {
+                mCompositeDisposable.dispose()
+            }
+            .subscribe { data ->
+                if (data.isEmpty()) result.onNext(Resource.Error("Data not found"))
+                else result.onNext(Resource.Success(data.map { it.toDomain() }))
+            }
+        mCompositeDisposable.add(response)
+        return result.toFlowable(BackpressureStrategy.BUFFER)
+    }
+
+    @SuppressLint("CheckResult")
+    override fun insertFavorite(movie: FavoriteMovie): Single<Boolean> {
+        val result = SingleSubject.create<Boolean>()
+        val mCompositeDisposable = CompositeDisposable()
+        val insert = localDataSource.insertMovieFavorite(movie.toEntity())
+        val disposable = insert.subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { mCompositeDisposable.dispose() }
+            .subscribe({
+                insert.unsubscribeOn(Schedulers.io())
+                result.onSuccess(true)
+            }, { error ->
+                result.onSuccess(false)
+                Log.d("Insert Favorite", error.message.toString())
+            })
+        mCompositeDisposable.add(disposable)
+        return result
+    }
+
+    override fun deleteFavorite(movie: FavoriteMovie): Single<Boolean> {
+        TODO("Not yet implemented")
     }
 }

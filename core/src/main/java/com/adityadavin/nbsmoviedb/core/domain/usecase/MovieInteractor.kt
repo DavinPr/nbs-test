@@ -3,14 +3,13 @@ package com.adityadavin.nbsmoviedb.core.domain.usecase
 import com.adityadavin.nbsmoviedb.core.data.Resource
 import com.adityadavin.nbsmoviedb.core.domain.model.CategoryMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
+import com.adityadavin.nbsmoviedb.core.domain.model.FavoriteMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.Movie
 import com.adityadavin.nbsmoviedb.core.domain.repository.IMovieRepository
-import com.adityadavin.nbsmoviedb.core.utils.BANNER_TYPE
-import com.adityadavin.nbsmoviedb.core.utils.COMING_SOON_MOVIE
-import com.adityadavin.nbsmoviedb.core.utils.HORIZONTAL_LIST_TYPE
-import com.adityadavin.nbsmoviedb.core.utils.POPULAR_MOVIE
+import com.adityadavin.nbsmoviedb.core.utils.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
@@ -55,4 +54,15 @@ class MovieInteractor(private val repository: IMovieRepository) : IMovieUseCase 
 
     override fun getDetailMovie(id: Int): Flowable<Resource<DetailMovie>> =
         repository.getDetailMovie(id)
+
+    override fun getMovieFavorite(): Flowable<Resource<List<FavoriteMovie>>> =
+        repository.getMovieFavorite()
+
+    override fun insertFavorite(movie: DetailMovie): Single<Boolean> =
+        repository.insertFavorite(movie.toFavoriteMovie())
+
+
+    override fun deleteFavorite(movie: DetailMovie): Single<Boolean> =
+        repository.deleteFavorite(movie.toFavoriteMovie())
+
 }

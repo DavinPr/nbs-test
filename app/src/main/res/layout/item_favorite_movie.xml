@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/grey_800">
+
+    <ImageView
+        android:id="@+id/favorite_poster"
+        android:layout_width="0dp"
+        android:layout_height="125dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/favorite_btn_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_circle"
+        android:padding="2dp"
+        android:src="@drawable/ic_baseline_favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/yellow_600"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/favorite_title"
+        style="@style/TextDetailMovieTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/favorite_date"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_btn_favorite"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/favorite_poster"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Avengers: Endgame" />
+
+    <TextView
+        android:id="@+id/favorite_date"
+        style="@style/TextSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/favorite_genres"
+        app:layout_constraintEnd_toEndOf="@+id/favorite_title"
+        app:layout_constraintStart_toStartOf="@+id/favorite_title"
+        app:layout_constraintTop_toBottomOf="@+id/favorite_title"
+        tools:text="2020" />
+
+    <TextView
+        android:id="@+id/favorite_genres"
+        style="@style/TextSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_poster"
+        app:layout_constraintEnd_toEndOf="@+id/favorite_date"
+        app:layout_constraintStart_toStartOf="@+id/favorite_date"
+        app:layout_constraintTop_toBottomOf="@+id/favorite_date"
+        tools:text="Drama, Action, Comedy, Series" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

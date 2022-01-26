@@ -3,8 +3,10 @@ package com.adityadavin.nbsmoviedb.core.domain.usecase
 import com.adityadavin.nbsmoviedb.core.data.Resource
 import com.adityadavin.nbsmoviedb.core.domain.model.CategoryMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
+import com.adityadavin.nbsmoviedb.core.domain.model.FavoriteMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.Movie
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 interface IMovieUseCase {
     fun getMovieByCategory() : Flowable<List<CategoryMovie>>
@@ -16,4 +18,10 @@ interface IMovieUseCase {
     fun getAllLocalPopularMovies(): Flowable<Resource<List<Movie>>>
 
     fun getDetailMovie(id : Int) : Flowable<Resource<DetailMovie>>
+
+    fun getMovieFavorite() : Flowable<Resource<List<FavoriteMovie>>>
+
+    fun insertFavorite(movie: DetailMovie): Single<Boolean>
+
+    fun deleteFavorite(movie: DetailMovie): Single<Boolean>
 }

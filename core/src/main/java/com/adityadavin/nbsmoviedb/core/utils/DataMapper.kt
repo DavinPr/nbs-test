@@ -1,15 +1,13 @@
 package com.adityadavin.nbsmoviedb.core.utils
 
 import com.adityadavin.nbsmoviedb.core.BuildConfig
-import com.adityadavin.nbsmoviedb.core.data.source.local.entity.MovieBannerEntity
-import com.adityadavin.nbsmoviedb.core.data.source.local.entity.MovieComingSoonEntity
-import com.adityadavin.nbsmoviedb.core.data.source.local.entity.MoviePopularEntity
-import com.adityadavin.nbsmoviedb.core.data.source.local.entity.MoviePopularOnYearEntity
+import com.adityadavin.nbsmoviedb.core.data.source.local.entity.*
 import com.adityadavin.nbsmoviedb.core.data.source.remote.response.CastItemResponse
 import com.adityadavin.nbsmoviedb.core.data.source.remote.response.DetailMovieResponse
 import com.adityadavin.nbsmoviedb.core.data.source.remote.response.MovieResultResponse
 import com.adityadavin.nbsmoviedb.core.domain.model.Casts
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
+import com.adityadavin.nbsmoviedb.core.domain.model.FavoriteMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.Movie
 
 fun MovieResultResponse.toBannerEntity(): MovieBannerEntity {
@@ -99,6 +97,39 @@ fun DetailMovieResponse.toDomain(): DetailMovie {
     )
 }
 
+fun MovieFavoriteEntity.toDomain(): FavoriteMovie {
+    return FavoriteMovie(
+        title,
+        backdropPath,
+        genres,
+        movieId,
+        overview,
+        runtime,
+        posterPath,
+        releaseDate,
+        voteAverage,
+        tagline
+    )
+}
+
+fun FavoriteMovie.toEntity(): MovieFavoriteEntity {
+    return MovieFavoriteEntity(
+        title,
+        backdropPath,
+        genres,
+        movieId,
+        overview,
+        runtime,
+        posterPath,
+        releaseDate,
+        voteAverage,
+        tagline
+    )
+}
+
+fun DetailMovie.toFavoriteMovie() : FavoriteMovie {
+    return FavoriteMovie(title, backdropPath, genres, id, overview, runtime, posterPath, releaseDate, voteAverage, tagline)
+}
 
 fun CastItemResponse.toDomain(): Casts {
     return Casts(castId, character, name, BuildConfig.IMAGE_URL + profilePath)

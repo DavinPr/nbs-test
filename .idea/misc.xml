@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/drawable/background_circle.xml" value="0.2" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/drawable/background_tag.xml" value="0.23796296296296296" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/drawable/foreground_detail_image.xml" value="0.2" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/drawable/selector_home.xml" value="0.2" />
@@ -14,6 +15,7 @@
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/fragment_more.xml" value="0.2359375" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/fragment_popular.xml" value="0.2359375" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/item_detail_cast.xml" value="0.25" />
+        <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/item_favorite_movie.xml" value="0.264" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/item_home_banner.xml" value="0.25" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/item_home_category.xml" value="0.25" />
         <entry key="..\:/nbs/NBSMovieDB/app/src/main/res/layout/item_home_category_banner.xml" value="0.25" />

@@ -1,8 +1,12 @@
 package com.adityadavin.nbsmoviedb.ui.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adityadavin.nbsmoviedb.R
 import com.adityadavin.nbsmoviedb.core.data.Resource
@@ -16,9 +20,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityDetailBinding
-    private val viewModel : DetailViewModel by viewModel()
-    private lateinit var castAdapter : DetailCastListAdapter
+    private lateinit var binding: ActivityDetailBinding
+    private val viewModel: DetailViewModel by viewModel()
+    private lateinit var castAdapter: DetailCastListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +33,15 @@ class DetailActivity : AppCompatActivity() {
 
         castAdapter = DetailCastListAdapter()
 
-        viewModel.getDetail(id).observe(this){ resource ->
-            when(resource) {
+        binding.btnBack.setOnClickListener { finish() }
+
+        viewModel.getDetail(id).observe(this) { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                     Log.d("Detail", resource.message.toString())
                 }
                 is Resource.Success -> {
-                    if (resource.data != null){
+                    if (resource.data != null) {
                         init(resource.data!!)
                     }
                     Log.d("Detail", resource.data.toString())
@@ -48,7 +54,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun init(detail : DetailMovie){
+    private fun init(detail: DetailMovie) {
         binding.detailTitle.text = detail.title
         binding.detailRuntime.text = detail.runtime
         binding.detailOverview.text = detail.overview
@@ -61,12 +67,40 @@ class DetailActivity : AppCompatActivity() {
             .into(binding.detailPoster)
 
         binding.detailRvCast.apply {
-            layoutManager = LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL, false)
             hasFixedSize()
             adapter = castAdapter
             addItemDecoration(
                 HorizontalSpaceDecoration(resources.getDimensionPixelSize(R.dimen.list_margin))
             )
+        }
+
+        binding.detailBtnTrailer.setOnClickListener {
+            val url = "https://www.youtube.com/results?search_query=" + detail.title + " trailer"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+
+        viewModel.setInit()
+        viewModel.isFavorite.observe(this) { state ->
+            if (!state) {
+                binding.detailBtnFavorite.apply {
+                    text = resources.getString(R.string.add_to_favorite)
+                    icon = ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_outline_add)
+                }
+            } else {
+                binding.detailBtnFavorite.apply {
+                    text = resources.getString(R.string.remove_from_favorite)
+                    icon =
+                        ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_outline_delete)
+                }
+            }
+        }
+
+        binding.detailBtnFavorite.setOnClickListener {
+            viewModel.insertFavorite(detail)
+            Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
         }
     }
 }
