@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +13,7 @@ import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
 import com.adityadavin.nbsmoviedb.core.utils.MOVIE_ID_KEY
 import com.adityadavin.nbsmoviedb.databinding.ActivityDetailBinding
 import com.adityadavin.nbsmoviedb.ui.detail.adapter.DetailCastListAdapter
+import com.adityadavin.nbsmoviedb.utils.Event
 import com.adityadavin.nbsmoviedb.utils.HorizontalSpaceDecoration
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +34,8 @@ class DetailActivity : AppCompatActivity() {
         castAdapter = DetailCastListAdapter()
 
         binding.btnBack.setOnClickListener { finish() }
+
+        viewModel.checkFavorite(id)
 
         viewModel.getDetail(id).observe(this) { resource ->
             when (resource) {
@@ -82,7 +84,6 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        viewModel.setInit()
         viewModel.isFavorite.observe(this) { state ->
             if (!state) {
                 binding.detailBtnFavorite.apply {
@@ -99,8 +100,21 @@ class DetailActivity : AppCompatActivity() {
         }
 
         binding.detailBtnFavorite.setOnClickListener {
-            viewModel.insertFavorite(detail)
-            Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
+            val isFavorite = viewModel.isFavorite.value
+            if (isFavorite != null) {
+                if (isFavorite) {
+                    viewModel.deleteFavorite(detail)
+                } else {
+                    viewModel.insertFavorite(detail)
+                }
+            }
+        }
+
+        viewModel.event.observe(this) {
+            if (it is Event.ShowToast) {
+                it.show(this)
+                viewModel.clearEvent
+            }
         }
     }
 }

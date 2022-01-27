@@ -16,9 +16,12 @@ class HomeListAdapter(private val onClick : ((Int) -> Unit)) :
     private val itemList = ArrayList<CategoryMovie>()
 
     fun setList(newList: List<CategoryMovie>?) {
-        if (newList == null) return
-        itemList.clear()
-        itemList.addAll(newList)
+        if (newList == null) {
+            itemList.addAll(listOf())
+        } else {
+            itemList.clear()
+            itemList.addAll(newList)
+        }
         notifyDataSetChanged()
     }
 

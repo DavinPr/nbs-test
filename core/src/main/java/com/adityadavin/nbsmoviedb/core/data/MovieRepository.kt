@@ -18,9 +18,11 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.SingleSubject
 
+@SuppressLint("CheckResult")
 class MovieRepository(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
@@ -207,17 +209,17 @@ class MovieRepository(
             .doOnComplete {
                 mCompositeDisposable.dispose()
             }
-            .subscribe { data ->
-                if (data.isEmpty()) result.onNext(Resource.Error("Data not found"))
-                else result.onNext(Resource.Success(data.map { it.toDomain() }))
+            .subscribe({ data ->
+                result.onNext(Resource.Success(data.map { it.toDomain() }))
+            }) {
+                result.onNext(Resource.Error(it.message.toString()))
             }
         mCompositeDisposable.add(response)
         return result.toFlowable(BackpressureStrategy.BUFFER)
     }
 
-    @SuppressLint("CheckResult")
-    override fun insertFavorite(movie: FavoriteMovie): Single<Boolean> {
-        val result = SingleSubject.create<Boolean>()
+    override fun insertFavorite(movie: FavoriteMovie): Completable {
+        val result = CompletableSubject.create()
         val mCompositeDisposable = CompositeDisposable()
         val insert = localDataSource.insertMovieFavorite(movie.toEntity())
         val disposable = insert.subscribeOn(Schedulers.computation())
@@ -225,16 +227,45 @@ class MovieRepository(
             .doOnComplete { mCompositeDisposable.dispose() }
             .subscribe({
                 insert.unsubscribeOn(Schedulers.io())
-                result.onSuccess(true)
-            }, { error ->
-                result.onSuccess(false)
+                result.onComplete()
+            }) { error ->
+                result.onError(error)
                 Log.d("Insert Favorite", error.message.toString())
-            })
+            }
         mCompositeDisposable.add(disposable)
         return result
     }
 
-    override fun deleteFavorite(movie: FavoriteMovie): Single<Boolean> {
-        TODO("Not yet implemented")
+    override fun deleteFavorite(movie: FavoriteMovie): Completable {
+        val result = CompletableSubject.create()
+        val mCompositeDisposable = CompositeDisposable()
+        val delete = localDataSource.deleteMovieFavorite(movie.toEntity())
+        val disposable = delete.subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { mCompositeDisposable.dispose() }
+            .subscribe({
+                delete.unsubscribeOn(Schedulers.io())
+                result.onComplete()
+            }) { error ->
+                result.onError(error)
+                Log.d("Insert Favorite", error.message.toString())
+            }
+        mCompositeDisposable.add(disposable)
+        return result
+    }
+
+    override fun isFavorite(id: Int): Single<Boolean> {
+        val result = SingleSubject.create<Boolean>()
+        val delete = localDataSource.isFavorite(id)
+        delete.subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                delete.unsubscribeOn(Schedulers.io())
+                result.onSuccess(it)
+            }) { error ->
+                result.onError(error)
+                Log.d("Insert Favorite", error.message.toString())
+            }
+        return result
     }
 }

@@ -14,9 +14,12 @@ class DetailCastListAdapter :
     var onClick: ((Int) -> Unit)? = null
 
     fun setList(newList: List<Casts>?) {
-        if (newList == null) return
-        itemList.clear()
-        itemList.addAll(newList)
+        if (newList == null) {
+            itemList.addAll(listOf())
+        } else {
+            itemList.clear()
+            itemList.addAll(newList)
+        }
         notifyDataSetChanged()
     }
 

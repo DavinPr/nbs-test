@@ -17,6 +17,7 @@ data class MovieFavoriteEntity(
     val genres: String? = null,
 
     @ColumnInfo(name = "movieId")
+    @PrimaryKey
     val movieId: Int = 0,
 
     @ColumnInfo(name = "overview")
@@ -36,8 +37,4 @@ data class MovieFavoriteEntity(
 
     @ColumnInfo(name = "tagline")
     val tagline: String? = null,
-
-    @ColumnInfo(name = "_id")
-    @PrimaryKey(autoGenerate = true)
-    val _id: Int = 0
 )

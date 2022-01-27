@@ -16,4 +16,5 @@
     <string name="cast">Cast</string>
     <string name="add_to_favorite">Add to Favorite</string>
     <string name="remove_from_favorite">Unfavorite</string>
+    <string name="insert_failed_message">Insert failed</string>
 </resources>

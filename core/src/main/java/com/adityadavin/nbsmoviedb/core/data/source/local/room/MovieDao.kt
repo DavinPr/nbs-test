@@ -4,6 +4,7 @@ import androidx.room.*
 import com.adityadavin.nbsmoviedb.core.data.source.local.entity.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface MovieDao {
@@ -55,5 +56,8 @@ interface MovieDao {
 
     @Query("DELETE FROM movie_popular_on_year")
     fun deleteAllMoviesPopularOnYear(): Completable
+
+    @Query("SELECT EXISTS(SELECT * FROM movie_favorite WHERE movieId = :id)")
+    fun isFavorite(id: Int): Single<Boolean>
 
 }

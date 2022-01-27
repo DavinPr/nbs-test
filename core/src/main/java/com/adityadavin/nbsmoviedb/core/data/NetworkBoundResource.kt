@@ -60,35 +60,20 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                 mCompositeDisposable.dispose()
             }
             .subscribe { response ->
+                val dbSource = loadFromDB()
                 when (response) {
                     is ApiResponse.Success -> {
-                        deleteLastItem().subscribeOn(Schedulers.computation()).subscribe({
-                            deleteLastItem().unsubscribeOn(Schedulers.io())
-                            saveCallResult(response.data)
-                            val dbSource = loadFromDB()
-                            dbSource.subscribeOn(Schedulers.computation())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .take(1)
-                                .subscribe {
-                                    dbSource.unsubscribeOn(Schedulers.io())
-                                    result.onNext(Resource.Success(it))
-                                }
-                        }) { error ->
-                            Log.d("banner", error.message.toString())
-                            deleteLastItem().unsubscribeOn(Schedulers.io())
-                            val dbSource = loadFromDB()
-                            dbSource.subscribeOn(Schedulers.computation())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .take(1)
-                                .subscribe {
-                                    dbSource.unsubscribeOn(Schedulers.io())
-                                    result.onNext(Resource.Error(error.message.toString(), it))
-                                }
-                        }
+                        saveCallResult(response.data)
+                        dbSource.subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .take(1)
+                            .subscribe {
+                                dbSource.unsubscribeOn(Schedulers.io())
+                                result.onNext(Resource.Success(it))
+                            }
 
                     }
                     is ApiResponse.Empty -> {
-                        val dbSource = loadFromDB()
                         dbSource.subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .take(1)
@@ -99,7 +84,6 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                     }
                     is ApiResponse.Error -> {
                         onFetchFailed()
-                        val dbSource = loadFromDB()
                         dbSource.subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .take(1)

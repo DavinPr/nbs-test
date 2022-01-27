@@ -11,11 +11,18 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.FavoriteVie
 
     private val list = ArrayList<FavoriteMovie>()
     fun setList(newList: List<FavoriteMovie>?) {
-        if (newList == null) return
-        list.clear()
-        list.addAll(newList)
+        if (newList == null) {
+            list.addAll(listOf())
+        } else {
+            list.clear()
+            list.addAll(newList)
+        }
         notifyDataSetChanged()
     }
+
+    var onClick: ((Int) -> Unit)? = null
+
+    var onDelete: ((FavoriteMovie) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,6 +47,15 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.FavoriteVie
             binding.favoriteTitle.text = movie.title
             binding.favoriteDate.text = movie.releaseDate
             binding.favoriteGenres.text = movie.genres
+        }
+
+        init {
+            itemView.setOnClickListener {
+                onClick?.invoke(list[bindingAdapterPosition].movieId)
+            }
+            binding.favoriteBtnDelete.setOnClickListener {
+                onDelete?.invoke(list[bindingAdapterPosition])
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import com.adityadavin.nbsmoviedb.core.data.source.local.entity.*
 import com.adityadavin.nbsmoviedb.core.data.source.local.room.MovieDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 class LocalDataSource(private val movieDao: MovieDao) {
 
@@ -47,4 +48,7 @@ class LocalDataSource(private val movieDao: MovieDao) {
 
     fun deleteMovieFavorite(movie: MovieFavoriteEntity): Completable =
         movieDao.deleteMovieFavorite(movie)
+
+
+    fun isFavorite(id: Int): Single<Boolean> = movieDao.isFavorite(id)
 }

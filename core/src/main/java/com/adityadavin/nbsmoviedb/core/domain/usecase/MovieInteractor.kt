@@ -8,6 +8,7 @@ import com.adityadavin.nbsmoviedb.core.domain.model.Movie
 import com.adityadavin.nbsmoviedb.core.domain.repository.IMovieRepository
 import com.adityadavin.nbsmoviedb.core.utils.*
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -58,11 +59,15 @@ class MovieInteractor(private val repository: IMovieRepository) : IMovieUseCase 
     override fun getMovieFavorite(): Flowable<Resource<List<FavoriteMovie>>> =
         repository.getMovieFavorite()
 
-    override fun insertFavorite(movie: DetailMovie): Single<Boolean> =
+    override fun insertFavorite(movie: DetailMovie): Completable =
         repository.insertFavorite(movie.toFavoriteMovie())
 
 
-    override fun deleteFavorite(movie: DetailMovie): Single<Boolean> =
+    override fun deleteFavorite(movie: FavoriteMovie): Completable =
+        repository.deleteFavorite(movie)
+
+    override fun deleteFavoriteFromDetail(movie: DetailMovie): Completable =
         repository.deleteFavorite(movie.toFavoriteMovie())
 
+    override fun isFavorite(id: Int): Single<Boolean> = repository.isFavorite(id)
 }

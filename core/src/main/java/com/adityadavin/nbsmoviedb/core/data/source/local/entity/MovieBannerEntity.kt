@@ -19,8 +19,6 @@ data class MovieBannerEntity(
     @ColumnInfo(name = "voteAverage")
     val voteAverage: Double = 0.0,
     @ColumnInfo(name = "movieId")
-    val movieId: Int = 0,
-    @ColumnInfo(name = "_id")
-    @PrimaryKey(autoGenerate = true)
-    val _id: Int = 0
+    @PrimaryKey
+    val movieId: Int = 0
 )

@@ -4,6 +4,7 @@ import com.adityadavin.nbsmoviedb.core.data.Resource
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.FavoriteMovie
 import com.adityadavin.nbsmoviedb.core.domain.model.Movie
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,7 +26,9 @@ interface IMovieRepository {
 
     fun getMovieFavorite(): Flowable<Resource<List<FavoriteMovie>>>
 
-    fun insertFavorite(movie: FavoriteMovie): Single<Boolean>
+    fun insertFavorite(movie: FavoriteMovie): Completable
 
-    fun deleteFavorite(movie: FavoriteMovie): Single<Boolean>
+    fun deleteFavorite(movie: FavoriteMovie): Completable
+
+    fun isFavorite(id : Int) : Single<Boolean>
 }
