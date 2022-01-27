@@ -50,6 +50,9 @@ class MovieInteractor(private val repository: IMovieRepository) : IMovieUseCase 
     override fun getFilteredPopularMovies(title: String): Flowable<Resource<List<Movie>>> =
         repository.getFilteredPopularMovies(title)
 
+    override fun getFilteredMovieFavorite(title: String): Flowable<Resource<List<FavoriteMovie>>> =
+        repository.getFilteredMovieFavorite(title)
+
     override fun getAllLocalPopularMovies(): Flowable<Resource<List<Movie>>> =
         repository.getAllLocalPopularMovies()
 
@@ -61,7 +64,6 @@ class MovieInteractor(private val repository: IMovieRepository) : IMovieUseCase 
 
     override fun insertFavorite(movie: DetailMovie): Completable =
         repository.insertFavorite(movie.toFavoriteMovie())
-
 
     override fun deleteFavorite(movie: FavoriteMovie): Completable =
         repository.deleteFavorite(movie)

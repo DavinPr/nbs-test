@@ -27,6 +27,9 @@ interface MovieDao {
     @Query("SELECT * FROM movie_favorite")
     fun getMoviesFavorite(): Flowable<List<MovieFavoriteEntity>>
 
+    @Query("SELECT * FROM movie_favorite WHERE title LIKE '%' || :title || '%'")
+    fun getFilteredMovieFavorite(title: String): Flowable<List<MovieFavoriteEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMoviesBanner(movies: List<MovieBannerEntity>): Completable
 

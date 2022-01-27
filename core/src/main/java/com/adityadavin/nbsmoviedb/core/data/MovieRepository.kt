@@ -131,7 +131,25 @@ class MovieRepository(
             .doOnComplete { mCompositeDisposable.dispose() }
             .subscribe { list ->
                 if (list.isNullOrEmpty()) {
-                    result.onNext(Resource.Error("Item not found", null))
+                    result.onNext(Resource.Success(listOf()))
+                } else {
+                    result.onNext(Resource.Success(list.map { it.toDomain() }))
+                }
+            }
+        mCompositeDisposable.add(disposable)
+        return result.toFlowable(BackpressureStrategy.BUFFER)
+    }
+
+    override fun getFilteredMovieFavorite(title: String): Flowable<Resource<List<FavoriteMovie>>> {
+        val result = PublishSubject.create<Resource<List<FavoriteMovie>>>()
+        val mCompositeDisposable = CompositeDisposable()
+        val disposable = localDataSource.getFilteredMovieFavorite(title)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { mCompositeDisposable.dispose() }
+            .subscribe { list ->
+                if (list.isNullOrEmpty()) {
+                    result.onNext(Resource.Success(listOf()))
                 } else {
                     result.onNext(Resource.Success(list.map { it.toDomain() }))
                 }

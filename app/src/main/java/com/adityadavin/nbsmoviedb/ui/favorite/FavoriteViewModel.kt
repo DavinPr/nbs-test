@@ -22,6 +22,12 @@ class FavoriteViewModel(private val useCase: IMovieUseCase) : ViewModel() {
         }
     }
 
+    fun searchMoviesFavorite(title: String) {
+        useCase.getFilteredMovieFavorite(title).subscribe {
+            _favoriteMovie.postValue(it)
+        }
+    }
+
     private val _event = MutableLiveData<Event>()
     val event: LiveData<Event> get() = _event
     val clearEvent = _event.postValue(Event.NoEvent)

@@ -23,6 +23,9 @@ class LocalDataSource(private val movieDao: MovieDao) {
 
     fun getMoviesFavorite(): Flowable<List<MovieFavoriteEntity>> = movieDao.getMoviesFavorite()
 
+    fun getFilteredMovieFavorite(title: String): Flowable<List<MovieFavoriteEntity>> =
+        movieDao.getFilteredMovieFavorite(title)
+
     fun insertMoviesBanner(movies: List<MovieBannerEntity>): Completable =
         movieDao.insertMoviesBanner(movies)
 

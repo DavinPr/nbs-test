@@ -22,6 +22,8 @@ interface IMovieUseCase {
 
     fun getMovieFavorite() : Flowable<Resource<List<FavoriteMovie>>>
 
+    fun getFilteredMovieFavorite(title: String): Flowable<Resource<List<FavoriteMovie>>>
+
     fun insertFavorite(movie: DetailMovie): Completable
 
     fun deleteFavorite(movie: FavoriteMovie): Completable

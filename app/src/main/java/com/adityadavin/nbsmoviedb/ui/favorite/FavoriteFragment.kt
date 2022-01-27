@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adityadavin.nbsmoviedb.R
@@ -78,6 +79,32 @@ class FavoriteFragment : Fragment() {
             hasFixedSize()
             adapter = favoriteAdapter
             addItemDecoration(VerticalSpaceDecoration(resources.getDimensionPixelSize(R.dimen.list_margin)))
+        }
+
+        binding.favoriteSearchMovie.apply {
+            setOnCloseListener {
+                binding.favoriteSearchMessage.apply {
+                    visibility = View.GONE
+                    text = null
+                }
+                viewModel.requestMoviesFavorite()
+                true
+            }
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    binding.favoriteSearchMessage.apply {
+                        visibility = View.VISIBLE
+                        text = resources.getString(R.string.search_message, query)
+                    }
+                    if (!query.isNullOrEmpty()) {
+                        viewModel.searchMoviesFavorite(query)
+                    }
+                    Log.d("Search", query.toString())
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean = false
+            })
         }
     }
 
