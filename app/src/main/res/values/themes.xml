@@ -84,4 +84,16 @@
         <item name="backgroundTint">@color/yellow_600</item>
     </style>
 
+    <style name="OutlinedEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxStrokeWidth">0.5dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/grey_500</item>
+        <item name="boxStrokeErrorColor">@android:color/holo_red_dark</item>
+        <item name="hintTextColor">@color/grey_500</item>
+    </style>
+
 </resources>

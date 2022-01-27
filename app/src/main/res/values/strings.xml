@@ -18,4 +18,8 @@
     <string name="add_to_favorite">Favorite</string>
     <string name="remove_from_favorite">Unfavorite</string>
     <string name="insert_failed_message">Insert failed</string>
+    <string name="my_name">Aditya Davin Pradana</string>
+    <string name="my_email">Adityadavinp@gmail.com</string>
+    <string name="rotate_left">Rotate Left</string>
+    <string name="input">Input Array</string>
 </resources>
