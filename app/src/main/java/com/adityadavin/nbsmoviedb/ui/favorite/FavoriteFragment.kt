@@ -82,6 +82,7 @@ class FavoriteFragment : Fragment() {
         }
 
         binding.favoriteSearchMovie.apply {
+            setIconifiedByDefault(false)
             setOnCloseListener {
                 binding.favoriteSearchMessage.apply {
                     visibility = View.GONE

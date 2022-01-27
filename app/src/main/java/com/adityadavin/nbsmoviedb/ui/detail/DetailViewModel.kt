@@ -3,9 +3,9 @@ package com.adityadavin.nbsmoviedb.ui.detail
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.adityadavin.nbsmoviedb.core.data.Resource
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
 import com.adityadavin.nbsmoviedb.core.domain.usecase.IMovieUseCase
 import com.adityadavin.nbsmoviedb.utils.Event
@@ -13,7 +13,15 @@ import com.adityadavin.nbsmoviedb.utils.Event
 @SuppressLint("CheckResult")
 class DetailViewModel(private val useCase: IMovieUseCase) : ViewModel() {
 
-    fun getDetail(id: Int) = LiveDataReactiveStreams.fromPublisher(useCase.getDetailMovie(id))
+    private val _detail = MutableLiveData<Resource<DetailMovie>>()
+    val detail: LiveData<Resource<DetailMovie>> get() = _detail
+
+
+    fun requestDetail(id: Int) {
+        useCase.getDetailMovie(id).subscribe {
+            _detail.postValue(it)
+        }
+    }
 
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> get() = _isFavorite

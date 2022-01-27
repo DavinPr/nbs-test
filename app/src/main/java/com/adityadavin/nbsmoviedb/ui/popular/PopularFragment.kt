@@ -82,11 +82,7 @@ class PopularFragment : Fragment() {
 
 
         binding.popularSearchMovie.apply {
-            val searchIcon = this.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
-            searchIcon.setColorFilter(
-                ContextCompat.getColor(requireContext(), R.color.white),
-                PorterDuff.Mode.SRC_IN
-            )
+            setIconifiedByDefault(false)
             setOnCloseListener {
                 binding.popularSearchMessage.apply {
                     visibility = View.GONE

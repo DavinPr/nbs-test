@@ -2,15 +2,22 @@ package com.adityadavin.nbsmoviedb.ui.detail
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adityadavin.nbsmoviedb.R
 import com.adityadavin.nbsmoviedb.core.data.Resource
 import com.adityadavin.nbsmoviedb.core.domain.model.DetailMovie
 import com.adityadavin.nbsmoviedb.core.utils.MOVIE_ID_KEY
+import com.adityadavin.nbsmoviedb.core.utils.fullScreen
+import com.adityadavin.nbsmoviedb.core.utils.setMargin
+import com.adityadavin.nbsmoviedb.core.utils.toPx
 import com.adityadavin.nbsmoviedb.databinding.ActivityDetailBinding
 import com.adityadavin.nbsmoviedb.ui.detail.adapter.DetailCastListAdapter
 import com.adityadavin.nbsmoviedb.utils.Event
@@ -29,6 +36,28 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        fullScreen()
+        if (Build.VERSION.SDK_INT >= 30) {
+            ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+                view.layoutParams = (view.layoutParams as FrameLayout.LayoutParams).apply {
+                    leftMargin = insets.left
+                    bottomMargin = insets.bottom
+                    rightMargin = insets.right
+                }
+
+                binding.btnBack.setMargin(
+                    marginRight = 16.toPx.toInt(),
+                    marginTop = (insets.top + 16.toPx.toInt()),
+                    marginLeft = 16.toPx.toInt(),
+                    marginBottom = 16.toPx.toInt()
+                )
+                WindowInsetsCompat.CONSUMED
+            }
+        }
+
         val id = intent.getIntExtra(MOVIE_ID_KEY, 0)
 
         castAdapter = DetailCastListAdapter()
@@ -37,7 +66,8 @@ class DetailActivity : AppCompatActivity() {
 
         viewModel.checkFavorite(id)
 
-        viewModel.getDetail(id).observe(this) { resource ->
+        viewModel.requestDetail(id)
+        viewModel.detail.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     Log.d("Detail", resource.message.toString())

@@ -12,9 +12,10 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="rating">%1$.1f/10</string>
     <string name="search_message">Showing Result of \'<b>%1$s</b>\'</string>
+    <string name="search_hint">Search title here …</string>
     <string name="watch_trailer">Watch Trailer</string>
     <string name="cast">Cast</string>
-    <string name="add_to_favorite">Add to Favorite</string>
+    <string name="add_to_favorite">Favorite</string>
     <string name="remove_from_favorite">Unfavorite</string>
     <string name="insert_failed_message">Insert failed</string>
 </resources>
